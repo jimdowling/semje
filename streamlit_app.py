@@ -10,7 +10,7 @@ st.title("✅ What's TRUE  : Using LangChain `SimpleSequentialChain`")
 # Add a link to the Github repository that inspired this app
 st.markdown("Inspired from [fact-checker](https://github.com/jagilley/fact-checker) by Jagiley")
 
-OPEN_API_KEY=os.environ['OPEN_API_KEY']
+OPEN_API_KEY=os.environ['OPENAI_API_KEY']
 
 llm = OpenAI(temperature=0.7, openai_api_key=OPEN_API_KEY)
 
