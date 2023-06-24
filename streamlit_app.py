@@ -60,36 +60,35 @@ uploaded_file = st.file_uploader("Choose a file", "pdf")
 if uploaded_file is not None:
     file_details = {"FileName":"doc.pdf","FileType":"pdf"}
     st.write(file_details)
+    loader = PyMuPDFLoader("doc.pdf")
+    documents = loader.load()
+
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=10)
+    texts = text_splitter.split_documents(documents)
+
+    embeddings = OpenAIEmbeddings()
+    vectordb = Chroma.from_documents(documents=texts, 
+                                    embedding=embeddings,
+                                    persist_directory=persist_directory)
+    vectordb.persist()
+
+    retriever = vectordb.as_retriever(search_kwargs={"k": 3})
+    llm = ChatOpenAI(model_name='gpt-4')
+
+    qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
 
 
-loader = PyMuPDFLoader("doc.pdf")
-documents = loader.load()
+    while True:
+            user_input = input("Enter a query: ")
+            if user_input == "exit":
+                break
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=10)
-texts = text_splitter.split_documents(documents)
-
-embeddings = OpenAIEmbeddings()
-vectordb = Chroma.from_documents(documents=texts, 
-                                 embedding=embeddings,
-                                 persist_directory=persist_directory)
-vectordb.persist()
-
-retriever = vectordb.as_retriever(search_kwargs={"k": 3})
-llm = ChatOpenAI(model_name='gpt-4')
-
-qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
-
-while True:
-        user_input = input("Enter a query: ")
-        if user_input == "exit":
-            break
-
-        query = f"###Prompt {user_input}"
-        try:
-            llm_response = qa(query)
-            print(llm_response["result"])
-        except Exception as err:
-            print('Exception occurred. Please try again', str(err))
+            query = f"###Prompt {user_input}"
+            try:
+                llm_response = qa(query)
+                print(llm_response["result"])
+            except Exception as err:
+                print('Exception occurred. Please try again', str(err))
 
 
 
