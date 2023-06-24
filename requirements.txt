@@ -1,4 +1,6 @@
 langchain
-#[llms]
 openai
 beautifulsoup4
+chromadb 
+pymupdf 
+tiktoken
