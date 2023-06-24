@@ -5,22 +5,29 @@ from langchain.prompts import PromptTemplate # import PromptTemplate
 import os
 
 # Set the title of the Streamlit app
-st.title("✅ What's TRUE  : Using LangChain `SimpleSequentialChain`")
+st.title("✅ What's TRUE  : Using LangChain `Semje Konflikt Utvärdering Verktyg`")
 
-# Add a link to the Github repository that inspired this app
-st.markdown("Inspired from [fact-checker](https://github.com/jagilley/fact-checker) by Jagiley")
+# st.markdown("Inspired from [fact-checker](https://github.com/jagilley/fact-checker) by Jagiley")
 
 OPEN_API_KEY=os.environ['OPENAI_API_KEY']
 
 llm = OpenAI(temperature=0.7, openai_api_key=OPEN_API_KEY)
 
-user_question = st.text_input(
-    "Enter Your Question : ",
-    placeholder = "Cyanobacteria can perform photosynthetsis , are they considered as plants?",
+
+option = st.selectbox(
+    'Select your type of organization document',
+    ('Exit Interview', 'Peer Review', 'Performance Review'))
+
+st.write('You selected:', option)
+
+
+user_question = st.text_area(
+# st.text_input(
+    "Enter Your document text: ",
+    placeholder = "Paste in the contents of the document here",
 )
 
-
-if st.button("Tell me about it", type="primary"):
+if st.button("Evaluate", type="primary"):
     # Chain 1: Generating a rephrased version of the user's question
     template = """{question}\n\n"""
     prompt_template = PromptTemplate(input_variables=["question"], template=template)
