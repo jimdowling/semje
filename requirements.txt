@@ -1,2 +1,4 @@
-langchain[llms]
+langchain
+#[llms]
 openai
+beautifulsoup4
