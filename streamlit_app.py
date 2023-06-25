@@ -3,6 +3,7 @@ from langchain.chains import LLMChain, SimpleSequentialChain # import LangChain 
 from langchain.llms import OpenAI # import OpenAI model
 from langchain.prompts import PromptTemplate # import PromptTemplate
 from langchain.document_loaders import PyMuPDFLoader
+from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
@@ -56,11 +57,20 @@ placeholder = "The following is an example of a " + option + ". Please estimate 
 
 persist_directory = "./"
 
+
+# loader = PyPDFLoader("example_data/layout-parser-paper.pdf")
+# pages = loader.load_and_split()
+
 uploaded_file = st.file_uploader("Choose a file", "pdf")
 if uploaded_file is not None:
-    file_details = {"FileName":"doc.pdf","FileType":"pdf"}
-    st.write(file_details)
-    loader = PyMuPDFLoader("doc.pdf")
+    # file_details = {"FileName":"doc.pdf","FileType":"pdf"}
+    # st.write(file_details)
+    bytes_data = uploaded_file.getvalue()
+    filename = "doc.pdf"
+    with open(filename, 'wb') as f: 
+        f.write(filebytes)
+
+    loader = PyMuPDFLoader(filename)
     documents = loader.load()
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=10)
@@ -78,17 +88,20 @@ if uploaded_file is not None:
     qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
 
 
-    while True:
-            user_input = input("Enter a query: ")
-            if user_input == "exit":
-                break
+    # user_input = st.text_input(
+    #     "Enter a question about your documents",
+    #     placeholder = "here",
+    # )
 
-            query = f"###Prompt {user_input}"
-            try:
-                llm_response = qa(query)
-                print(llm_response["result"])
-            except Exception as err:
-                print('Exception occurred. Please try again', str(err))
+    placeholder = "The following is an example of a " + option + ". Please estimate how much conflict was a factor in this document. " + user_question
+    st.write(placeholder)
+
+    query = f"###Prompt {placeholder}"
+    try:
+        llm_response = qa(query)
+        st.write(llm_response["result"])
+    except Exception as err:
+        st.write('Exception occurred. Please try again', str(err))
 
 
 
