@@ -16,11 +16,11 @@ import os
 # Set the title of the Streamlit app
 st.title("✅ Semje Konflikt Utvärdering Verktyg")
 
-OPEN_API_KEY=os.environ['OPENAI_API_KEY']
+OPENAI_API_KEY=os.environ['OPENAI_API_KEY']
 
 # llm = OpenAI(temperature=0.7, openai_api_key=OPEN_API_KEY)
 
-llm = ChatOpenAI(model_name='gpt-3.5-turbo', openai_api_key=OPEN_API_KEY)
+# llm = ChatOpenAI(model_name='gpt-3.5-turbo', openai_api_key=OPEN_API_KEY)
 
 
 option = st.selectbox(
@@ -83,7 +83,8 @@ if uploaded_file is not None:
     vectordb.persist()
 
     retriever = vectordb.as_retriever(search_kwargs={"k": 3})
-    llm = ChatOpenAI(model_name='gpt-4')
+    llm = ChatOpenAI(model_name='gpt-3.5-turbo')
+    #, openai_api_key=OPENAI_API_KEY)
 
     qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
 
