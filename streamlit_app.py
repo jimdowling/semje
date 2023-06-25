@@ -65,7 +65,7 @@ uploaded_file = st.file_uploader("Choose a file", "pdf")
 if uploaded_file is not None:
     # file_details = {"FileName":"doc.pdf","FileType":"pdf"}
     # st.write(file_details)
-    bytes_data = uploaded_file.getvalue()
+    filebytes = uploaded_file.getvalue()
     filename = "doc.pdf"
     with open(filename, 'wb') as f: 
         f.write(filebytes)
