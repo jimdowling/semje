@@ -30,13 +30,14 @@ option = st.selectbox(
 st.write('You selected:', option)
 
 
-user_question = st.text_area(
-# st.text_input(
-    "Enter Your document text: ",
-    placeholder = "Paste in the contents of the document here",
-)
+# user_question = st.text_area(
+# # st.text_input(
+#     "Enter Your document text: ",
+#     placeholder = "Paste in the contents of the document here",
+# )
 
-placeholder = "The following is an example of a " + option + ". Please estimate how much conflict was a factor in this document. " + user_question
+# user_question = ""
+# placeholder = "The following is an example of a " + option + ". Please estimate how much conflict was a factor in this document. " + user_question
 
 
 # from langchain.document_loaders import PyMuPDFLoader
@@ -94,7 +95,8 @@ if uploaded_file is not None:
     #     placeholder = "here",
     # )
 
-    placeholder = "The following is an example of a " + option + ". Please estimate how much conflict was a factor in this document. " + user_question
+    placeholder = "The following is an example of a " + option + ". Please estimate how much conflict was a factor in this document. " 
+    #+ user_question
     st.write(placeholder)
 
     query = f"###Prompt {placeholder}"
