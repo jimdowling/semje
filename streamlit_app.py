@@ -20,7 +20,7 @@ OPEN_API_KEY=os.environ['OPENAI_API_KEY']
 
 # llm = OpenAI(temperature=0.7, openai_api_key=OPEN_API_KEY)
 
-llm = ChatOpenAI(model_name='gpt-4', openai_api_key=OPEN_API_KEY)
+llm = ChatOpenAI(model_name='gpt-3.5-turbo', openai_api_key=OPEN_API_KEY)
 
 
 option = st.selectbox(
